@@ -142,11 +142,13 @@ def parse_table(html):
         mm = re.search(r"東証(PRM|STD|GRT|ETF)", row)
         if mm:
             mkt = MKT.get("東証" + mm.group(1), "unknown")
-        px = re.search(r'class="[^"]*(?:StyledNumber|price)[^"]*"[^>]*>\s*<[^>]*>?([\d,]+(?:\.\d+)?)', row)
+        # 値カラム(RankingTable__primary内のStyledNumber__value)が現在株価。
+        pm = re.search(r'RankingTable__primary\w*"[\s\S]{0,200}?'
+                       r'StyledNumber__value\w*">([\d,]+(?:\.\d+)?)', row)
         price = None
-        if px:
+        if pm:
             try:
-                price = float(px.group(1).replace(",", ""))
+                price = float(pm.group(1).replace(",", ""))
             except ValueError:
                 price = None
         entries.append({"rank": int(rk.group(1)), "code": link.group(1),
