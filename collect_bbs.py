@@ -7,7 +7,7 @@ docs/data/history.json にスナップショットを蓄積し、PWA(docs/index.
 [{"at": ISO8601, "source": str,
   "entries": [{"rank":int, "code":str, "name":str,
                "market":"prime|standard|growth|etf|unknown",
-               "mcap":null, "chg":float|None}, ...]}, ...]
+               "mcap":null, "chg":float|None, "price":float|None}, ...]}, ...]
 
 注意: Yahoo!ファイナンスの規約上、自動取得は原則禁止。1日1回・数リクエストの
       個人利用に留め、リポジトリは非公開推奨。
@@ -57,6 +57,30 @@ def norm_market(v):
     return "unknown"
 
 
+def extract_price(it):
+    """ランキング項目dictから現在株価(円)を推定抽出。前日比・比率系は除外。"""
+    for k in ("price", "marketPrice", "currentPrice", "stockPrice", "nowPrice",
+              "regularMarketPrice", "lastPrice", "closePrice"):
+        if k in it:
+            try:
+                p = float(str(it[k]).replace(",", "").replace("円", ""))
+                if p > 0:
+                    return p
+            except (ValueError, TypeError):
+                pass
+    for k, v in it.items():
+        kl = k.lower()
+        if "price" in kl and not re.search(
+                r"change|prev|diff|rate|ratio|fall|rise|target|open|high|low|range", kl):
+            try:
+                p = float(str(v).replace(",", "").replace("円", ""))
+                if p > 0:
+                    return p
+            except (ValueError, TypeError):
+                pass
+    return None
+
+
 def parse_next_data(html):
     m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
     if not m:
@@ -97,8 +121,9 @@ def parse_next_data(html):
                         break
                     except (ValueError, TypeError):
                         pass
+            price = extract_price(it)
             entries.append({"rank": int(rank), "code": code, "name": str(name),
-                            "market": market, "mcap": None, "chg": chg})
+                            "market": market, "mcap": None, "chg": chg, "price": price})
         if len(entries) >= 10:
             return entries
     return []
@@ -117,9 +142,16 @@ def parse_table(html):
         mm = re.search(r"東証(PRM|STD|GRT|ETF)", row)
         if mm:
             mkt = MKT.get("東証" + mm.group(1), "unknown")
+        px = re.search(r'class="[^"]*(?:StyledNumber|price)[^"]*"[^>]*>\s*<[^>]*>?([\d,]+(?:\.\d+)?)', row)
+        price = None
+        if px:
+            try:
+                price = float(px.group(1).replace(",", ""))
+            except ValueError:
+                price = None
         entries.append({"rank": int(rk.group(1)), "code": link.group(1),
                         "name": link.group(2).strip(), "market": mkt,
-                        "mcap": None, "chg": None})
+                        "mcap": None, "chg": None, "price": price})
     # 重複除去
     seen, uniq = set(), []
     for e in sorted(entries, key=lambda x: x["rank"]):
