@@ -1,0 +1,28 @@
+# .github/workflows/collect.yml に配置
+name: Collect BBS Ranking
+
+on:
+  schedule:
+    - cron: "30 9 * * 1-5"   # JST 18:30 平日(ランキング更新は18時過ぎ)
+  workflow_dispatch:           # 手動実行も可能
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collect ranking
+        run: python collect_bbs.py
+      - name: Commit data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/data/history.json
+          git diff --cached --quiet || git commit -m "bbs data $(date +%F)"
+          git push

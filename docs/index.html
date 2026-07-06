@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>掲示板ヒートボード</title>
+<!-- iPhoneホーム画面アプリ化(PWA) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="掲示板熱">
+<meta name="theme-color" content="#141414">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<link rel="manifest" href="./manifest.json">
+<style>
+  :root{
+    --ink:#141414; --sub:#6b7280; --line:#e7e5e1; --bg:#ffffff;
+    --accent:#e8590c; --accent-soft:#fdf0e7; --down:#9ca3af;
+    --prime:#1d4ed8; --std:#047857;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"Helvetica Neue","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    padding:20px 14px 60px;max-width:800px;margin:0 auto}
+  header{border-bottom:3px solid var(--ink);padding-bottom:14px;margin-bottom:6px}
+  h1{font-size:21px;letter-spacing:.04em}
+  h1 span{color:var(--accent)}
+  .meta{font-size:12px;color:var(--sub);margin-top:6px;line-height:1.6}
+  .mtabs{display:flex;gap:8px;margin:16px 0 4px}
+  .mtab{flex:1;padding:10px 6px;font-size:15px;font-weight:800;border:2px solid var(--ink);
+    border-radius:8px;background:#fff;cursor:pointer;color:var(--ink);letter-spacing:.05em}
+  .mtab.on.prime{background:var(--prime);border-color:var(--prime);color:#fff}
+  .mtab.on.std{background:var(--std);border-color:var(--std);color:#fff}
+  .mtab small{display:block;font-size:10px;font-weight:400;letter-spacing:0}
+  .toolbar{display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap}
+  .tabs{display:flex;border:1.5px solid var(--ink);overflow:hidden;border-radius:6px}
+  .tab{padding:7px 14px;font-size:13px;font-weight:700;background:#fff;border:none;cursor:pointer;color:var(--ink)}
+  .tab.on{background:var(--ink);color:#fff}
+  .btn{margin-left:auto;padding:8px 16px;font-size:13px;font-weight:700;border:none;border-radius:6px;
+    background:var(--accent);color:#fff;cursor:pointer}
+  .btn:disabled{opacity:.5;cursor:wait}
+  .ptabs{display:flex;gap:6px;margin:0 0 10px}
+  .ptab{padding:5px 12px;font-size:12px;font-weight:700;border:1.5px solid var(--line);
+    border-radius:99px;background:#fff;cursor:pointer;color:var(--sub)}
+  .ptab.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .status{font-size:12px;color:var(--sub);min-height:16px;margin-bottom:8px}
+  .status.err{color:#b91c1c}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:11px;color:var(--sub);text-align:left;font-weight:600;padding:6px 8px;border-bottom:1.5px solid var(--ink)}
+  td{padding:8px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+  tr:hover td{background:#faf9f7}
+  .rk{font-size:17px;font-weight:800;width:40px;font-variant-numeric:tabular-nums}
+  tr.top3 .rk{color:var(--accent)}
+  .allrk{font-size:11px;color:var(--sub);width:56px;font-variant-numeric:tabular-nums}
+  .code{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+  a.nm{color:var(--ink);text-decoration:none;font-weight:600}
+  a.nm:hover{color:var(--accent);text-decoration:underline}
+  .mcap{display:block;font-size:11px;color:var(--sub);margin-top:2px;font-variant-numeric:tabular-nums}
+  .mcap b{color:var(--ink);font-weight:700}
+  .mv{white-space:nowrap;font-weight:700;font-size:13px;text-align:right;width:104px;font-variant-numeric:tabular-nums}
+  .mv .bar{display:inline-block;height:8px;background:var(--accent);border-radius:2px;margin-right:6px;vertical-align:middle}
+  .mv.new{color:var(--accent)}
+  .mv.flat,.mv.dn{color:var(--down);font-weight:500}
+  .note{font-size:12px;color:var(--sub);background:var(--accent-soft);border-left:3px solid var(--accent);
+    padding:10px 12px;border-radius:0 6px 6px 0;margin:12px 0;line-height:1.7}
+  .badge{display:inline-block;font-size:10px;font-weight:800;color:#fff;background:var(--accent);
+    border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:middle;letter-spacing:.05em}
+  .streak{font-size:13px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .sbar{display:block;height:5px;background:#f0ede9;border-radius:99px;margin-top:4px;width:72px;overflow:hidden}
+  .sbar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+  .out{color:var(--down);font-weight:500}
+  .chg{font-size:11px;font-weight:700;margin-left:6px;font-variant-numeric:tabular-nums}
+  .chg.u{color:#dc2626}.chg.d{color:#2563eb}
+  .mini{padding:6px 10px;font-size:11px;font-weight:700;border:1.5px solid var(--line);
+    border-radius:6px;background:#fff;color:var(--sub);cursor:pointer}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>掲示板<span>ヒート</span>ボード <small style="font-size:12px;color:var(--sub);font-weight:400">Yahoo!掲示板投稿数 × 市場区分別</small></h1>
+  <div class="meta" id="meta">読み込み中…</div>
+</header>
+
+<div class="mtabs">
+  <button class="mtab prime on" id="mtabP" onclick="setMarket('prime')">プライム<small id="cntP"></small></button>
+  <button class="mtab std" id="mtabS" onclick="setMarket('standard')">スタンダード<small id="cntS"></small></button>
+</div>
+
+<div class="toolbar">
+  <div class="tabs">
+    <button class="tab on" id="tabRank" onclick="setView('rank')">投稿数</button>
+    <button class="tab" id="tabGrow" onclick="setView('grow')">急上昇</button>
+    <button class="tab" id="tabTrack" onclick="setView('track')">継続記録</button>
+  </div>
+  <button class="btn" id="btnRefresh" onclick="refresh()">最新データを取得</button>
+  <button class="mini" onclick="exportData()">保存</button>
+  <button class="mini" onclick="document.getElementById('impFile').click()">復元</button>
+  <input type="file" id="impFile" accept=".json" style="display:none" onchange="importData(this)">
+</div>
+<div class="status" id="status"></div>
+
+<div id="paneRank">
+  <table>
+    <thead><tr><th>市場内</th><th>全体</th><th>銘柄 / 時価総額（概算）</th><th style="text-align:right">前回比</th></tr></thead>
+    <tbody id="bodyRank"></tbody>
+  </table>
+</div>
+
+<div id="paneGrow" class="hidden">
+  <div class="ptabs">
+    <button class="ptab on" id="pt_last" onclick="setPeriod('last')">前回比</button>
+    <button class="ptab" id="pt_3d" onclick="setPeriod('3d')">3日前比</button>
+    <button class="ptab" id="pt_1w" onclick="setPeriod('1w')">1週間前比</button>
+  </div>
+  <div class="note" id="growNote"></div>
+  <table>
+    <thead><tr><th>市場内</th><th>全体</th><th>銘柄 / 時価総額（概算）</th><th style="text-align:right">盛り上がり度</th></tr></thead>
+    <tbody id="bodyGrow"></tbody>
+  </table>
+</div>
+
+<div id="paneTrack" class="hidden">
+  <div class="ptabs">
+    <span style="font-size:12px;color:var(--sub);align-self:center">連続判定:</span>
+    <button class="ptab" id="gr_chain" onclick="setGrace('chain')">毎更新必須</button>
+    <button class="ptab on" id="gr_3" onclick="setGrace('3')">3日猶予</button>
+    <button class="ptab" id="gr_5" onclick="setGrace('5')">5日猶予</button>
+  </div>
+  <div class="note" id="trackNote"></div>
+  <table>
+    <thead><tr><th>銘柄</th><th>初Top20入り</th><th>連続</th><th style="text-align:right">通算</th></tr></thead>
+    <tbody id="bodyTrack"></tbody>
+  </table>
+</div>
+
+<div class="note">
+  全市場の掲示板投稿数ランキング（日次）を市場区分でプライム板/スタンダード板に分割・再順位付けしています。
+  時価総額は概算値から東証全体でのおおよその順位を推定表示（「最新データを取得」で更新・補完）。
+  急上昇は保存済みスナップショット履歴との比較で、3日前比・1週間前比は履歴が貯まると使えるようになります。
+</div>
+
+<script>
+// entries: {rank, code, name, market(prime/standard/growth/etf/unknown), mcap(億円, nullable)}
+const SEED = {
+  at: "2026-06-16T18:03:00+09:00",
+  source: "Yahoo!ファイナンス 日次ランキング(全市場)",
+  entries: [
+    [1,"285A","キオクシアホールディングス","prime",60000],[2,"5016","ＪＸ金属","prime",18000],
+    [3,"9984","ソフトバンクグループ","prime",200000],[4,"6740","ジャパンディスプレイ","prime",900],
+    [5,"186A","アストロスケールHD","growth",1500],[6,"8105","Bitcoin Japan","standard",300],
+    [7,"5803","フジクラ","prime",30000],[8,"6976","太陽誘電","prime",4000],
+    [9,"581A","ＧＯ","growth",2500],[10,"485A","パワーエックス","growth",800],
+    [11,"6981","村田製作所","prime",17000],[12,"3825","リミックスポイント","standard",500],
+    [13,"8136","サンリオ","prime",15000],[14,"5721","エスクリプトエナジー","standard",200],
+    [15,"3350","メタプラネット","standard",3000],[16,"278A","Terra Drone","growth",300],
+    [17,"4392","ＦＩＧ","prime",150],[18,"3687","フィックスターズ","prime",700],
+    [19,"6613","ＱＤレーザ","growth",150],[20,"8306","三菱ＵＦＪ ＦＧ","prime",250000],
+    [21,"3103","ユニチカ","standard",300],[22,"7974","任天堂","prime",150000],
+    [23,"7746","岡本硝子","standard",100],[24,"7777","スリー・ディー・マトリックス","growth",200],
+    [25,"3905","データセクション","growth",1000],[26,"9432","ＮＴＴ","prime",130000],
+    [27,"7011","三菱重工業","prime",100000],[28,"3656","ＫＬａｂ","prime",100],
+    [29,"2160","ジーエヌアイグループ","growth",1500],[30,"5253","カバー","growth",2500],
+    [31,"7013","ＩＨＩ","prime",30000],[32,"8303","ＳＢＩ新生銀行","prime",9000],
+    [33,"7412","アトム","standard",1500],[34,"7203","トヨタ自動車","prime",450000],
+    [35,"4062","イビデン","prime",15000],[36,"9501","東京電力HD","prime",10000],
+    [37,"464A","ＱＰＳホールディングス","growth",1000],[38,"4588","オンコリスバイオファーマ","growth",150],
+    [39,"2586","フルッタフルッタ","growth",50],[40,"6857","アドバンテスト","prime",80000],
+    [41,"4592","サンバイオ","growth",1500],[42,"190A","Chordia Therapeutics","growth",150],
+    [43,"1570","日経レバレッジ上場投信","etf",null],[44,"6659","メディアリンクス","standard",50],
+    [45,"215A","タイミー","growth",2000],[46,"5801","古河電気工業","prime",13000],
+    [47,"4179","ジーネクスト","growth",30],[48,"402A","アクセルスペースHD","growth",400],
+    [49,"6993","大黒屋ホールディングス","standard",100],[50,"1357","日経Wインバース上場投信","etf",null]
+  ].map(([rank,code,name,market,mcap])=>({rank,code,name,market,mcap}))
+};
+const KEY="bbs:snapshots:v2";
+let snapshots=[], curMarket="prime", curView="rank", curPeriod="last";
+
+// ---- 実行環境アダプタ: Claudeアーティファクト内 or 自前ホスティング(GitHub Pages等) ----
+const IN_CLAUDE = typeof window.storage !== "undefined";
+const store = {
+  async get(k){
+    if(IN_CLAUDE){try{const r=await window.storage.get(k);return r?r.value:null}catch(e){return null}}
+    return localStorage.getItem(k);
+  },
+  async set(k,v){
+    if(IN_CLAUDE){await window.storage.set(k,v);return}
+    localStorage.setItem(k,v);
+  }
+};
+function getApiKey(){ // 自前ホスティング時のみ使用(Claude内では不要)
+  let key=localStorage.getItem("bbs:apikey");
+  if(!key){
+    key=prompt("自前ホスティングで更新するにはAnthropic APIキーが必要です。\n(console.anthropic.com で取得。この端末のブラウザ内にのみ保存されます)");
+    if(key) localStorage.setItem("bbs:apikey",key.trim());
+  }
+  return key?key.trim():null;
+}
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtDate=iso=>{const d=new Date(iso);return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`};
+
+// ---- 時価総額 → 東証全体でのおおよその順位（アンカー点をlog-log補間）----
+const MCAP_ANCHORS=[ // [時価総額(億円), おおよその順位]
+  [500000,1],[200000,4],[100000,11],[50000,28],[30000,50],[15000,95],[10000,140],
+  [5000,260],[2500,480],[1000,950],[500,1500],[300,2000],[100,3000],[50,3500],[20,3800]
+];
+function mcapRank(mcap){
+  if(!mcap||mcap<=0) return null;
+  const A=MCAP_ANCHORS;
+  if(mcap>=A[0][0]) return A[0][1];
+  if(mcap<=A[A.length-1][0]) return A[A.length-1][1];
+  for(let i=0;i<A.length-1;i++){
+    const [m1,r1]=A[i],[m2,r2]=A[i+1];
+    if(mcap<=m1&&mcap>=m2){
+      const t=(Math.log(mcap)-Math.log(m2))/(Math.log(m1)-Math.log(m2));
+      const r=Math.exp(Math.log(r2)+t*(Math.log(r1)-Math.log(r2)));
+      return Math.round(r);
+    }
+  }
+  return null;
+}
+function fmtMcapRank(r){ // 概算らしく丸める
+  if(r==null) return null;
+  const step=r<50?1:r<300?10:r<1000?50:100;
+  return Math.round(r/step)*step;
+}
+function fmtMcap(mcap){
+  if(!mcap) return "";
+  return mcap>=10000 ? `約${(mcap/10000).toFixed(1).replace(/\.0$/,"")}兆円`
+                     : `約${mcap.toLocaleString()}億円`;
+}
+function mcapHtml(e){
+  if(e.market==="etf") return `<span class="mcap">ETF</span>`;
+  if(!e.mcap) return `<span class="mcap">時価総額 不明</span>`;
+  const r=fmtMcapRank(mcapRank(e.mcap));
+  return `<span class="mcap">時価総額 ${fmtMcap(e.mcap)}<b> ≈全体${r?r.toLocaleString()+"位":"—"}</b></span>`;
+}
+
+// ---- 履歴 ----
+function knownFields(){
+  const mk={},mc={};
+  for(const s of snapshots) for(const e of s.entries){
+    if(e.market&&e.market!=="unknown") mk[e.code]=e.market;
+    if(e.mcap) mc[e.code]=e.mcap;
+  }
+  for(const e of SEED.entries){mk[e.code]=mk[e.code]||e.market; if(e.mcap&&!mc[e.code]) mc[e.code]=e.mcap;}
+  return {mk,mc};
+}
+async function loadHistory(){
+  try{
+    const v=await store.get(KEY);
+    if(v) snapshots=JSON.parse(v);
+  }catch(e){/* 初回 */}
+  // GitHub Actions収集のデータ(docs/data/history.json)があれば最優先で採用
+  const repo=await loadRepoHistory();
+  if(repo){
+    snapshots=repo.slice(-30);
+    rebuildTrackerFromHistory();   // 初登場日・通算はマージ保持される
+    await saveHistory(); await saveTracker();
+  }
+  if(!snapshots.length) snapshots=[SEED];
+  render();
+  if(repo) setStatus(`✓ 自動収集データを読込（${repo.length}スナップショット、最新${fmtDate(latest().at)}）`);
+}
+async function loadRepoHistory(){
+  if(IN_CLAUDE) return null; // ホスティング時のみ
+  try{
+    const res=await fetch("./data/history.json?t="+Date.now(),{cache:"no-store"});
+    if(!res.ok) return null;
+    const arr=await res.json();
+    if(Array.isArray(arr)&&arr.length&&arr[0].entries&&arr[0].at) return arr;
+  }catch(e){/* データ未設置なら手動運用にフォールバック */}
+  return null;
+}
+// ---- バックアップ: 全データをJSONで書き出し/読み戻し ----
+function exportData(){
+  const blob=new Blob([JSON.stringify({v:1,exported:new Date().toISOString(),
+    snapshots,tracker,graceMode},null,1)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`keijiban_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  setStatus("✓ バックアップを書き出しました");
+}
+async function importData(input){
+  const f=input.files[0]; if(!f) return;
+  try{
+    const d=JSON.parse(await f.text());
+    if(!Array.isArray(d.snapshots)||typeof d.tracker!=="object") throw new Error("形式が不正です");
+    snapshots=d.snapshots.slice(-30); tracker=d.tracker;
+    if(d.graceMode) {graceMode=d.graceMode; applyGraceUI();}
+    await saveHistory(); await saveTracker();
+    render();
+    setStatus(`✓ 復元しました（${snapshots.length}スナップショット・記録${Object.keys(tracker).length}銘柄）`);
+  }catch(e){setStatus("復元に失敗: "+e.message,true);}
+  input.value="";
+}
+async function saveHistory(){
+  try{await store.set(KEY, JSON.stringify(snapshots.slice(-30)));}
+  catch(e){setStatus("履歴の保存に失敗しました（表示は継続します）",true);}
+}
+const latest=()=>snapshots[snapshots.length-1];
+
+// ================= 急上昇Top20 継続記録 =================
+const TKEY="bbs:tracker:v1", GKEY="bbs:grace";
+let tracker={}; // code -> {name,market,mcap,first,streakStart,last,count,bestStreak}
+let graceMode="3"; // "chain"=毎更新必須 / "3"・"5"=○日以内の再登場で継続
+
+async function loadTracker(){
+  try{const v=await store.get(TKEY); if(v) tracker=JSON.parse(v);}catch(e){/* 初回 */}
+  try{const g=await store.get(GKEY); if(g) graceMode=g;}catch(e){/* 初回 */}
+  applyGraceUI();
+}
+async function saveTracker(){
+  try{await store.set(TKEY, JSON.stringify(tracker));}catch(e){/* 表示は継続 */}
+}
+function applyGraceUI(){
+  for(const m of ["chain","3","5"]) $("gr_"+m).classList.toggle("on",graceMode===m);
+}
+async function setGrace(m){
+  graceMode=m; applyGraceUI();
+  try{await store.set(GKEY,m);}catch(e){}
+  rebuildTrackerFromHistory(); // 保存済み履歴から新基準で再計算
+  await saveTracker();
+  render();
+}
+// 連続が途切れたか判定(猶予モード対応)
+function streakBroken(t, newSnap, prevSnapObj){
+  if(graceMode==="chain") return t.last!==prevSnapObj.at;
+  return dayDiff(t.last, newSnap.at) > +graceMode;
+}
+// snapとその直前スナップから、市場内の急上昇(前回比)Top20を返す
+function growthTop20(snap, base, market){
+  if(!base) return [];
+  const cs=segEntries(snap,market);
+  const bm=Object.fromEntries(segEntries(base,market).map(e=>[e.code,e]));
+  return cs.map(e=>{
+      const p=bm[e.code];
+      return p?{...e,jump:p.segRank-e.segRank,isNew:false}
+              :{...e,jump:(cs.length+1)-e.segRank,isNew:true};
+    }).filter(r=>r.jump>0).sort((a,b)=>b.jump-a.jump).slice(0,20);
+}
+const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/86400e3);
+const streakDays=t=>dayDiff(t.streakStart,t.last)+1; // 初日を1日目と数える
+
+// 新スナップ追加時に呼ぶ。直前スナップとの前回比Top20をトラッカーに記録
+function updateTracker(newSnap, prevSnapObj){
+  if(!prevSnapObj) return;
+  for(const market of ["prime","standard"]){
+    for(const r of growthTop20(newSnap, prevSnapObj, market)){
+      const t=tracker[r.code];
+      if(!t){
+        tracker[r.code]={name:r.name,market,mcap:r.mcap||null,
+          first:newSnap.at,streakStart:newSnap.at,last:newSnap.at,count:1,bestStreak:1};
+      }else{
+        if(streakBroken(t,newSnap,prevSnapObj)) t.streakStart=newSnap.at;
+        t.last=newSnap.at; t.count++;
+        t.name=r.name; if(r.mcap) t.mcap=r.mcap;
+        if(typeof r.chg==="number") t.chg=r.chg;
+        t.bestStreak=Math.max(t.bestStreak||1, streakDays(t));
+      }
+    }
+  }
+}
+// 判定基準の変更時: 保存済みスナップショット履歴(最大30件)から連続を再計算。
+// 初登場日・通算・最長は過去の記録を下回らないようマージして保持する。
+function rebuildTrackerFromHistory(){
+  const old=tracker; tracker={};
+  for(let i=1;i<snapshots.length;i++) updateTracker(snapshots[i], snapshots[i-1]);
+  for(const [c,o] of Object.entries(old)){
+    const t=tracker[c];
+    if(!t){tracker[c]=o;continue;} // 履歴外に消えた銘柄の記録は温存
+    if(o.first<t.first) t.first=o.first;
+    t.count=Math.max(t.count,o.count);
+    t.bestStreak=Math.max(t.bestStreak||1,o.bestStreak||1);
+  }
+}
+// ========================================================
+
+
+// 期間指定の比較元スナップショットを選ぶ
+function baseSnapshot(period){
+  if(snapshots.length<2) return {snap:null,fallback:false};
+  if(period==="last") return {snap:snapshots[snapshots.length-2],fallback:false};
+  const days=period==="3d"?3:7;
+  const target=new Date(latest().at).getTime()-days*86400e3;
+  const older=snapshots.slice(0,-1).filter(s=>new Date(s.at).getTime()<=target);
+  if(older.length) return {snap:older[older.length-1],fallback:false}; // target以前で最新
+  return {snap:snapshots[0],fallback:true}; // 履歴不足→最古で代用
+}
+
+function setStatus(m,err){const s=$("status");s.textContent=m;s.className="status"+(err?" err":"");}
+function segEntries(snap,market){
+  return snap.entries.filter(e=>e.market===market)
+    .sort((a,b)=>a.rank-b.rank).map((e,i)=>({...e,segRank:i+1}));
+}
+function setMarket(m){
+  curMarket=m;
+  $("mtabP").classList.toggle("on",m==="prime");
+  $("mtabS").classList.toggle("on",m==="standard");
+  render();
+}
+function setView(v){
+  curView=v;
+  $("paneRank").classList.toggle("hidden",v!=="rank");
+  $("paneGrow").classList.toggle("hidden",v!=="grow");
+  $("paneTrack").classList.toggle("hidden",v!=="track");
+  $("tabRank").classList.toggle("on",v==="rank");
+  $("tabGrow").classList.toggle("on",v==="grow");
+  $("tabTrack").classList.toggle("on",v==="track");
+}
+function setPeriod(p){
+  curPeriod=p;
+  for(const id of ["pt_last","pt_3d","pt_1w"]) $(id).classList.remove("on");
+  $({"last":"pt_last","3d":"pt_3d","1w":"pt_1w"}[p]).classList.add("on");
+  render();
+}
+
+function chgHtml(e){
+  if(typeof e.chg!=="number") return "";
+  const s=e.chg>0?"+":"";
+  return `<span class="chg ${e.chg>=0?"u":"d"}">${s}${e.chg.toFixed(1)}%</span>`;
+}
+function nameCell(e){
+  return `<td><a class="nm" href="https://finance.yahoo.co.jp/quote/${esc(e.code)}.T/forum" target="_blank" rel="noopener">${esc(e.name)}</a>
+    <span class="code"> ${esc(e.code)}</span>${chgHtml(e)}${mcapHtml(e)}</td>`;
+}
+
+function render(){
+  const cur=latest();
+  const curSeg=segEntries(cur,curMarket);
+  $("meta").textContent=`データ時点: ${fmtDate(cur.at)}（${cur.source||"取得データ"}）｜保存スナップショット: ${snapshots.length}件`;
+  $("cntP").textContent=segEntries(cur,"prime").length+"銘柄";
+  $("cntS").textContent=segEntries(cur,"standard").length+"銘柄";
+
+  // ---- 投稿数ランキング（前回比の矢印付き）----
+  const prev=snapshots.length>=2?snapshots[snapshots.length-2]:null;
+  const prevMapR=prev?Object.fromEntries(segEntries(prev,curMarket).map(e=>[e.code,e])):null;
+  $("bodyRank").innerHTML=curSeg.length?curSeg.map(e=>{
+    let mv=`<td class="mv flat">-</td>`;
+    if(prevMapR){
+      const p=prevMapR[e.code];
+      if(!p) mv=`<td class="mv new">NEW</td>`;
+      else{const j=p.segRank-e.segRank;
+        mv=j>0?`<td class="mv">↑${j}</td>`:j<0?`<td class="mv dn">↓${-j}</td>`:`<td class="mv flat">→</td>`;}
+    }
+    return `<tr class="${e.segRank<=3?"top3":""}"><td class="rk">${e.segRank}</td>
+      <td class="allrk">全体${e.rank}位</td>${nameCell(e)}${mv}</tr>`;
+  }).join(""):`<tr><td colspan="4" style="color:var(--sub)">この市場区分の銘柄はランキング圏内にありません。</td></tr>`;
+
+  // ---- 継続記録 ----
+  renderTrack();
+
+  // ---- 急上昇（期間: 前回 / 3日 / 1週間）----
+  const {snap:base,fallback}=baseSnapshot(curPeriod);
+  if(!base){
+    $("growNote").textContent="比較元がまだ1件のため、「最新データを取得」を1回以上実行すると急上昇ランキングが表示されます。";
+    $("bodyGrow").innerHTML="";
+    return;
+  }
+  const label={last:"前回",["3d"]:"3日前",["1w"]:"1週間前"}[curPeriod];
+  const baseSeg=Object.fromEntries(segEntries(base,curMarket).map(e=>[e.code,e]));
+  $("growNote").textContent=
+    `比較: ${fmtDate(base.at)} → ${fmtDate(cur.at)}`+
+    (fallback?`（${label}のスナップショットが未保存のため、最古の履歴で代用中。毎日更新すると揃います）`:`（${label}比）`)+
+    `。${curMarket==="prime"?"プライム":"スタンダード"}銘柄内の順位ジャンプ幅で算出、圏外→ランクインは「NEW」。`;
+  const rows=curSeg.map(e=>{
+    const p=baseSeg[e.code];
+    return p?{...e,jump:p.segRank-e.segRank,isNew:false}
+            :{...e,jump:(curSeg.length+1)-e.segRank,isNew:true};
+  }).filter(r=>r.jump>0).sort((a,b)=>b.jump-a.jump);
+  const max=Math.max(...rows.map(r=>r.jump),1);
+  $("bodyGrow").innerHTML=rows.length?rows.map(r=>
+    `<tr><td class="rk">${r.segRank}</td><td class="allrk">全体${r.rank}位</td>${nameCell(r)}
+     <td class="mv ${r.isNew?"new":""}"><span class="bar" style="width:${Math.round(r.jump/max*56)}px"></span>${r.isNew?"NEW":"↑"+r.jump}</td></tr>`
+  ).join(""):`<tr><td colspan="4" style="color:var(--sub)">${label}から順位上昇した銘柄はありません。</td></tr>`;
+}
+
+function renderTrack(){
+  const fmtD=iso=>{const d=new Date(iso);return `${d.getMonth()+1}/${d.getDate()}`};
+  const nowAt=latest().at;
+  const rows=Object.entries(tracker)
+    .filter(([,t])=>t.market===curMarket)
+    .map(([code,t])=>{
+      const active=t.last===nowAt;
+      // 猶予モード時: 直近更新で外れていても猶予日数以内なら連続は生きている
+      const inGrace=!active&&graceMode!=="chain"&&dayDiff(t.last,nowAt)<=+graceMode;
+      return {code,...t,active,inGrace,days:streakDays(t)};
+    })
+    .sort((a,b)=>((b.active||b.inGrace)-(a.active||a.inGrace))||(b.days-a.days)||(b.count-a.count));
+  const mLabel=curMarket==="prime"?"プライム":"スタンダード";
+  const gLabel=graceMode==="chain"?"毎更新でTop20入りが必要（最も厳格）":`${graceMode}日以内に再登場すれば連続が継続`;
+  $("trackNote").textContent=rows.length
+    ? `急上昇(前回比)Top20に入った${mLabel}銘柄を自動記録。現在の連続判定: ${gLabel}。14日継続で「2週間継続」バッジ。圏外に落ちても初登場日と通算回数は残ります。`
+    : `まだ記録がありません。「最新データを取得」を実行するたびに、その時点の急上昇Top20銘柄（${mLabel}）が自動で記録されていきます。`;
+  $("bodyTrack").innerHTML=rows.map(t=>{
+    const pct=Math.min(t.days/14,1)*100;
+    let streakCell;
+    if(t.active){
+      streakCell=`<span class="streak">${t.days}日${t.days>=14?'<span class="badge">2週間継続</span>':""}</span>
+        <span class="sbar"><i style="width:${pct}%"></i></span>`;
+    }else if(t.inGrace){
+      const left=+graceMode-dayDiff(t.last,nowAt);
+      streakCell=`<span class="streak">${t.days}日 <span style="font-size:10px;color:var(--accent)">猶予中(あと${left}日)</span></span>
+        <span class="sbar"><i style="width:${pct}%;opacity:.45"></i></span>`;
+    }else{
+      streakCell=`<span class="streak out">圏外</span><span class="sbar"><i style="width:0"></i></span>
+        <span style="font-size:10px;color:var(--sub)">最長${t.bestStreak||1}日</span>`;
+    }
+    return `<tr>
+      <td><a class="nm" href="https://finance.yahoo.co.jp/quote/${esc(t.code)}.T/forum" target="_blank" rel="noopener">${esc(t.name)}</a>
+        <span class="code"> ${esc(t.code)}</span>${t.active?chgHtml(t):""}${mcapHtml(t)}</td>
+      <td style="font-variant-numeric:tabular-nums">${fmtD(t.first)}</td>
+      <td>${streakCell}</td>
+      <td class="mv">${t.count}回</td></tr>`;
+  }).join("")||"";
+}
+
+async function refresh(){
+  const btn=$("btnRefresh");btn.disabled=true;
+  setStatus("Web検索で最新ランキングを取得中…（20〜60秒かかることがあります）");
+  try{
+    const headers={"Content-Type":"application/json"};
+    if(!IN_CLAUDE){ // GitHub Pages等の自前ホスティング時はAPIキーが必要
+      const key=getApiKey();
+      if(!key) throw new Error("APIキーが未設定のため更新できません");
+      headers["x-api-key"]=key;
+      headers["anthropic-version"]="2023-06-01";
+      headers["anthropic-dangerous-direct-browser-access"]="true";
+    }
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers,
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",max_tokens:2000,
+        tools:[{type:"web_search_20250305",name:"web_search"}],
+        messages:[{role:"user",content:
+`Yahoo!ファイナンスの日本株「掲示板投稿数ランキング」(https://finance.yahoo.co.jp/stocks/ranking/bbs) の現時点の日次順位をWeb検索で調べてください。Yahoo!ファイナンス公式X(@yahoojpfinance)の当日・直近の投稿も有力な情報源です。
+判明した範囲の上位銘柄(できれば15件以上)を、以下のJSON配列**のみ**で返してください。前置き・コードブロック記号・説明は一切不要です。
+- code: 4桁英数字の銘柄コード(例:"285A","5803")
+- market: 東証プライム="prime"、スタンダード="standard"、グロース="growth"、ETF="etf"、不明="unknown"
+- mcap: その銘柄の概算時価総額を億円単位の整数で(例: 3.2兆円→32000、850億円→850)。不明ならnull。Web検索せず知識の範囲の概算で構いません。
+- chg: 当日の前日比騰落率(%を数値で。例: +5.2%→5.2、-3.1%→-3.1)。不明ならnull。
+[{"rank":1,"code":"285A","name":"キオクシアHD","market":"prime","mcap":60000,"chg":5.2},...]
+確実に判明した順位のみ含めてください。`}]
+      })
+    });
+    const data=await res.json();
+    if(data.error){
+      if(!IN_CLAUDE&&(res.status===401||res.status===403)) localStorage.removeItem("bbs:apikey");
+      throw new Error(data.error.message||"APIエラー");
+    }
+    const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    const m=text.match(/\[[\s\S]*\]/);
+    if(!m) throw new Error("ランキングJSONを抽出できませんでした");
+    const {mk,mc}=knownFields();
+    const valid=new Set(["prime","standard","growth","etf","unknown"]);
+    const arr=JSON.parse(m[0].replace(/```json|```/g,""))
+      .filter(e=>e&&Number.isInteger(+e.rank)&&/^[0-9][0-9A-Z]{3}$/.test(String(e.code||"")))
+      .map(e=>{
+        const code=String(e.code);
+        let market=valid.has(e.market)?e.market:"unknown";
+        if(market==="unknown"&&mk[code]) market=mk[code];
+        let mcap=(typeof e.mcap==="number"&&e.mcap>0)?Math.round(e.mcap):null;
+        if(!mcap&&mc[code]) mcap=mc[code];   // 履歴から補完
+        const chg=(typeof e.chg==="number"&&Math.abs(e.chg)<80)?e.chg:undefined;
+        return {rank:+e.rank,code,name:String(e.name||code),market,mcap,...(chg!==undefined?{chg}:{})};
+      }).sort((a,b)=>a.rank-b.rank);
+    if(arr.length<5) throw new Error(`取得件数が少なすぎます(${arr.length}件)。時間をおいて再試行してください`);
+    const newSnap={at:new Date().toISOString(),source:"Web検索(取得"+arr.length+"件)",entries:arr};
+    const prevForTracker=latest();
+    snapshots.push(newSnap);
+    updateTracker(newSnap, prevForTracker);
+    await saveHistory();
+    await saveTracker();
+    render();
+    const unk=arr.filter(e=>e.market==="unknown").length;
+    setStatus(`✓ ${arr.length}件取得（${fmtDate(latest().at)}時点）`+(unk?`｜市場区分不明${unk}件は両板に表示されません`:""));
+  }catch(err){
+    setStatus("取得に失敗: "+err.message,true);
+  }finally{btn.disabled=false;}
+}
+
+loadTracker().then(loadHistory);
+</script>
+</body>
+</html>
