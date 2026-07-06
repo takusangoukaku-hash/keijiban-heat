@@ -142,6 +142,7 @@
   全市場の掲示板投稿数ランキング（日次）を市場区分でプライム板/スタンダード板に分割・再順位付けしています。
   時価総額は概算値から東証全体でのおおよその順位を推定表示（「最新データを取得」で更新・補完）。
   急上昇は保存済みスナップショット履歴との比較で、3日前比・1週間前比は履歴が貯まると使えるようになります。
+  銘柄名の横の <span class="chg u" title="前日終値比">+○%</span>/<span class="chg d">−○%</span> は前日比（前営業日の終値→当日終値。自動収集は平日18:30の終値ベース）で、2営業日分の株価が揃うと表示されます。
 </div>
 
 <script>
@@ -437,10 +438,22 @@ function setPeriod(p){
   render();
 }
 
+// 前日比(%): 明示的なchgがあれば優先、なければ前スナップ(=前営業日終値)との株価差から算出。
+// 収集cronは平日18:30実行で価格は当日終値のため、スナップ間の株価変化＝前日終値比になる。
+function resolveChg(e){
+  if(typeof e.chg==="number") return e.chg;
+  if(snapshots.length>=2){
+    const findP=s=>{const x=s.entries.find(y=>y.code===e.code); return x&&typeof x.price==="number"?x.price:null;};
+    const cur=findP(latest()), prev=findP(snapshots[snapshots.length-2]);
+    if(cur!=null&&prev!=null&&prev>0) return (cur/prev-1)*100;
+  }
+  return null;
+}
 function chgHtml(e){
-  if(typeof e.chg!=="number") return "";
-  const s=e.chg>0?"+":"";
-  return `<span class="chg ${e.chg>=0?"u":"d"}">${s}${e.chg.toFixed(1)}%</span>`;
+  const c=resolveChg(e);
+  if(typeof c!=="number"||!isFinite(c)) return "";
+  const s=c>0?"+":"";
+  return `<span class="chg ${c>=0?"u":"d"}" title="前日終値比">${s}${c.toFixed(1)}%</span>`;
 }
 function nameCell(e){
   return `<td><a class="nm" href="https://finance.yahoo.co.jp/quote/${esc(e.code)}.T/forum" target="_blank" rel="noopener">${esc(e.name)}</a>
