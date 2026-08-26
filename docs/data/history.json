@@ -31120,5 +31120,875 @@
     "price": 6986.0
    }
   ]
+ },
+ {
+  "at": "2026-08-26T19:05:50+09:00",
+  "source": "GitHub Actions自動収集(96件)",
+  "entries": [
+   {
+    "rank": 1,
+    "code": "285A",
+    "name": "キオクシアホールディングス(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 50000.0
+   },
+   {
+    "rank": 2,
+    "code": "278A",
+    "name": "Ｔｅｒｒａ　Ｄｒｏｎｅ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 17050.0
+   },
+   {
+    "rank": 3,
+    "code": "3350",
+    "name": "(株)メタプラネット",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 310.0
+   },
+   {
+    "rank": 4,
+    "code": "3103",
+    "name": "ユニチカ(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 1455.0
+   },
+   {
+    "rank": 5,
+    "code": "5803",
+    "name": "(株)フジクラ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 5305.0
+   },
+   {
+    "rank": 6,
+    "code": "3905",
+    "name": "データセクション(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1527.0
+   },
+   {
+    "rank": 7,
+    "code": "3856",
+    "name": "Ａｂａｌａｎｃｅ(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 319.0
+   },
+   {
+    "rank": 8,
+    "code": "593A",
+    "name": "(株)ティアフォー",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1328.0
+   },
+   {
+    "rank": 9,
+    "code": "4588",
+    "name": "オンコリスバイオファーマ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 4020.0
+   },
+   {
+    "rank": 10,
+    "code": "5016",
+    "name": "ＪＸ金属(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3850.0
+   },
+   {
+    "rank": 11,
+    "code": "6085",
+    "name": "アーキテクツ・スタジオ・ジャパン(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 235.0
+   },
+   {
+    "rank": 12,
+    "code": "8766",
+    "name": "東京海上ホールディングス(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 7629.0
+   },
+   {
+    "rank": 13,
+    "code": "9984",
+    "name": "ソフトバンクグループ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 5163.0
+   },
+   {
+    "rank": 14,
+    "code": "4170",
+    "name": "(株)Ｋａｉｚｅｎ　Ｐｌａｔｆｏｒｍ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 231.0
+   },
+   {
+    "rank": 15,
+    "code": "9432",
+    "name": "ＮＴＴ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 169.6
+   },
+   {
+    "rank": 16,
+    "code": "6613",
+    "name": "(株)ＱＤレーザ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 2373.0
+   },
+   {
+    "rank": 17,
+    "code": "6976",
+    "name": "太陽誘電(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 9060.0
+   },
+   {
+    "rank": 18,
+    "code": "6740",
+    "name": "(株)ジャパンディスプレイ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 46.0
+   },
+   {
+    "rank": 19,
+    "code": "4392",
+    "name": "ＦＩＧ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 1001.0
+   },
+   {
+    "rank": 20,
+    "code": "485A",
+    "name": "(株)パワーエックス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1790.0
+   },
+   {
+    "rank": 21,
+    "code": "5801",
+    "name": "古河電気工業(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3905.0
+   },
+   {
+    "rank": 22,
+    "code": "6330",
+    "name": "東洋エンジニアリング(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2504.0
+   },
+   {
+    "rank": 23,
+    "code": "9501",
+    "name": "東京電力ホールディングス(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 538.3
+   },
+   {
+    "rank": 24,
+    "code": "6981",
+    "name": "(株)村田製作所",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 7185.0
+   },
+   {
+    "rank": 25,
+    "code": "7974",
+    "name": "任天堂(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 8896.0
+   },
+   {
+    "rank": 26,
+    "code": "8306",
+    "name": "(株)三菱ＵＦＪフィナンシャル・グループ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3579.0
+   },
+   {
+    "rank": 27,
+    "code": "3656",
+    "name": "ＫＬａｂ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 193.0
+   },
+   {
+    "rank": 28,
+    "code": "5721",
+    "name": "エスクリプトエナジー(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 58.0
+   },
+   {
+    "rank": 29,
+    "code": "6857",
+    "name": "(株)アドバンテスト",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 35700.0
+   },
+   {
+    "rank": 30,
+    "code": "8136",
+    "name": "(株)サンリオ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 1210.0
+   },
+   {
+    "rank": 31,
+    "code": "3907",
+    "name": "シリコンスタジオ(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 2050.0
+   },
+   {
+    "rank": 32,
+    "code": "7810",
+    "name": "(株)クロスフォー",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 183.0
+   },
+   {
+    "rank": 33,
+    "code": "5253",
+    "name": "カバー(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1703.0
+   },
+   {
+    "rank": 34,
+    "code": "4575",
+    "name": "(株)キャンバス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 818.0
+   },
+   {
+    "rank": 35,
+    "code": "4889",
+    "name": "(株)レナサイエンス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1309.0
+   },
+   {
+    "rank": 36,
+    "code": "7011",
+    "name": "三菱重工業(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3920.0
+   },
+   {
+    "rank": 37,
+    "code": "6232",
+    "name": "(株)ＡＣＳＬ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1500.0
+   },
+   {
+    "rank": 38,
+    "code": "4062",
+    "name": "イビデン(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 20080.0
+   },
+   {
+    "rank": 39,
+    "code": "7013",
+    "name": "(株)ＩＨＩ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2638.0
+   },
+   {
+    "rank": 40,
+    "code": "6522",
+    "name": "(株)アスタリスク",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 2067.0
+   },
+   {
+    "rank": 41,
+    "code": "7936",
+    "name": "(株)アシックス",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 4536.0
+   },
+   {
+    "rank": 42,
+    "code": "4833",
+    "name": "(株)Ｄｅｆ　ｃｏｎｓｕｌｔｉｎｇ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 58.0
+   },
+   {
+    "rank": 43,
+    "code": "3825",
+    "name": "(株)リミックスポイント",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 226.0
+   },
+   {
+    "rank": 44,
+    "code": "7794",
+    "name": "(株)イーディーピー",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1041.0
+   },
+   {
+    "rank": 45,
+    "code": "2160",
+    "name": "(株)ジーエヌアイグループ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 2761.0
+   },
+   {
+    "rank": 46,
+    "code": "7201",
+    "name": "日産自動車(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 318.5
+   },
+   {
+    "rank": 47,
+    "code": "8267",
+    "name": "イオン(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 1384.5
+   },
+   {
+    "rank": 48,
+    "code": "1570",
+    "name": "(NEXT FUNDS)日経平均レバレッジ上場投信",
+    "market": "etf",
+    "mcap": null,
+    "chg": null,
+    "price": 69640.0
+   },
+   {
+    "rank": 49,
+    "code": "6993",
+    "name": "大黒屋ホールディングス(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 87.0
+   },
+   {
+    "rank": 50,
+    "code": "7138",
+    "name": "(株)ＴＯＲＩＣＯ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 170.0
+   },
+   {
+    "rank": 51,
+    "code": "4592",
+    "name": "サンバイオ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 998.0
+   },
+   {
+    "rank": 52,
+    "code": "4082",
+    "name": "第一稀元素化学工業(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2591.0
+   },
+   {
+    "rank": 53,
+    "code": "7012",
+    "name": "川崎重工業(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2575.0
+   },
+   {
+    "rank": 54,
+    "code": "5802",
+    "name": "住友電気工業(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2211.5
+   },
+   {
+    "rank": 55,
+    "code": "8411",
+    "name": "(株)みずほフィナンシャルグループ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 8314.0
+   },
+   {
+    "rank": 56,
+    "code": "8473",
+    "name": "ＳＢＩホールディングス(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3394.0
+   },
+   {
+    "rank": 57,
+    "code": "186A",
+    "name": "(株)アストロスケールホールディングス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1130.0
+   },
+   {
+    "rank": 58,
+    "code": "6525",
+    "name": "(株)ＫＯＫＵＳＡＩ　ＥＬＥＣＴＲＩＣ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 8466.0
+   },
+   {
+    "rank": 59,
+    "code": "7203",
+    "name": "トヨタ自動車(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3070.0
+   },
+   {
+    "rank": 60,
+    "code": "5713",
+    "name": "住友金属鉱山(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 11575.0
+   },
+   {
+    "rank": 61,
+    "code": "4755",
+    "name": "楽天グループ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 772.7
+   },
+   {
+    "rank": 62,
+    "code": "7615",
+    "name": "(株)京都きもの友禅ホールディングス",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 101.0
+   },
+   {
+    "rank": 63,
+    "code": "8729",
+    "name": "ソニーフィナンシャルグループ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 162.7
+   },
+   {
+    "rank": 64,
+    "code": "2962",
+    "name": "(株)テクニスコ",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 1785.0
+   },
+   {
+    "rank": 65,
+    "code": "3664",
+    "name": "(株)ＷＩＺＥ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 27.0
+   },
+   {
+    "rank": 66,
+    "code": "7746",
+    "name": "岡本硝子(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 759.0
+   },
+   {
+    "rank": 67,
+    "code": "4422",
+    "name": "ＶＡＬＵＥＮＥＸ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 600.0
+   },
+   {
+    "rank": 68,
+    "code": "6920",
+    "name": "レーザーテック(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 34620.0
+   },
+   {
+    "rank": 69,
+    "code": "4894",
+    "name": "クオリプス(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 5490.0
+   },
+   {
+    "rank": 70,
+    "code": "1357",
+    "name": "(NEXT FUNDS) 日経ダブルインバース上場投信",
+    "market": "etf",
+    "mcap": null,
+    "chg": null,
+    "price": 2734.0
+   },
+   {
+    "rank": 71,
+    "code": "6227",
+    "name": "ＡＩメカテック(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 6210.0
+   },
+   {
+    "rank": 72,
+    "code": "4506",
+    "name": "住友ファーマ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 1454.0
+   },
+   {
+    "rank": 73,
+    "code": "2134",
+    "name": "北浜キャピタルパートナーズ(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 21.0
+   },
+   {
+    "rank": 74,
+    "code": "7777",
+    "name": "(株)スリー・ディー・マトリックス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 356.0
+   },
+   {
+    "rank": 75,
+    "code": "7709",
+    "name": "クボテック(株)",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 60.0
+   },
+   {
+    "rank": 76,
+    "code": "5243",
+    "name": "ｎｏｔｅ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 2695.0
+   },
+   {
+    "rank": 77,
+    "code": "4563",
+    "name": "アンジェス(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 39.0
+   },
+   {
+    "rank": 78,
+    "code": "290A",
+    "name": "(株)Ｓｙｎｓｐｅｃｔｉｖｅ",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1494.0
+   },
+   {
+    "rank": 79,
+    "code": "4568",
+    "name": "第一三共(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2900.0
+   },
+   {
+    "rank": 80,
+    "code": "4381",
+    "name": "ビープラッツ(株)",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 293.0
+   },
+   {
+    "rank": 81,
+    "code": "3687",
+    "name": "(株)フィックスターズ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2156.0
+   },
+   {
+    "rank": 82,
+    "code": "3110",
+    "name": "日東紡",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2901.0
+   },
+   {
+    "rank": 83,
+    "code": "3436",
+    "name": "(株)ＳＵＭＣＯ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3405.0
+   },
+   {
+    "rank": 84,
+    "code": "4593",
+    "name": "(株)ヘリオス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 282.0
+   },
+   {
+    "rank": 85,
+    "code": "543A",
+    "name": "ＡＲＣＨＩＯＮ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 273.0
+   },
+   {
+    "rank": 86,
+    "code": "9107",
+    "name": "川崎汽船(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3306.0
+   },
+   {
+    "rank": 87,
+    "code": "8303",
+    "name": "(株)ＳＢＩ新生銀行",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 1549.0
+   },
+   {
+    "rank": 88,
+    "code": "464A",
+    "name": "(株)ＱＰＳホールディングス",
+    "market": "growth",
+    "mcap": null,
+    "chg": null,
+    "price": 1836.0
+   },
+   {
+    "rank": 89,
+    "code": "4935",
+    "name": "(株)リベルタ",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 212.0
+   },
+   {
+    "rank": 90,
+    "code": "2354",
+    "name": "(株)ＹＥ　ＤＩＧＩＴＡＬ",
+    "market": "standard",
+    "mcap": null,
+    "chg": null,
+    "price": 1428.0
+   },
+   {
+    "rank": 91,
+    "code": "9104",
+    "name": "(株)商船三井",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 7074.0
+   },
+   {
+    "rank": 92,
+    "code": "6758",
+    "name": "ソニーグループ(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 3878.0
+   },
+   {
+    "rank": 93,
+    "code": "1540",
+    "name": "純金上場信託(現物国内保管型)",
+    "market": "etf",
+    "mcap": null,
+    "chg": null,
+    "price": 22105.0
+   },
+   {
+    "rank": 94,
+    "code": "5711",
+    "name": "三菱マテリアル(株)",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 5963.0
+   },
+   {
+    "rank": 95,
+    "code": "6526",
+    "name": "(株)ソシオネクスト",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 2004.0
+   },
+   {
+    "rank": 96,
+    "code": "8316",
+    "name": "(株)三井住友フィナンシャルグループ",
+    "market": "prime",
+    "mcap": null,
+    "chg": null,
+    "price": 6732.0
+   }
+  ]
  }
 ]
